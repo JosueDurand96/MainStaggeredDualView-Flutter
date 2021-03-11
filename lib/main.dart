@@ -33,13 +33,18 @@ class MainStaggeredDualView extends StatelessWidget {
             ),
           ),
         ),
-        body: StaggeredDualView(
-          aspectRatio: 0.7,
-          spacing: 20,
-          itemBuilder: (context, index) {
-            return MealItem(meal: meals[index]);
-          },
-          itemCount: meals.length,
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: StaggeredDualView(
+            aspectRatio: 0.7,
+            spacing: 20,
+            itemBuilder: (context, index) {
+              return MealItem(
+                meal: meals[index],
+              );
+            },
+            itemCount: meals.length,
+          ),
         ),
       ),
     );
@@ -53,9 +58,10 @@ class MealItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
+      color: Colors.white,
+      elevation: 12 ,
       child: Column(
-        mainAxisSize : MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             child: ClipOval(
@@ -68,7 +74,9 @@ class MealItem extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
               child: Column(
             children: [
@@ -77,7 +85,8 @@ class MealItem extends StatelessWidget {
                 maxLines: 2,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontSize: 12,
+                  color: Colors.black,
                 ),
               ),
               Text(
@@ -124,12 +133,19 @@ class StaggeredDualView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: aspectRatio,
-          crossAxisSpacing: spacing,
-          mainAxisSpacing: spacing,
-        ),
-        itemBuilder: itemBuilder);
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: aspectRatio,
+        crossAxisSpacing: spacing,
+        mainAxisSpacing: spacing,
+      ),
+      itemCount: itemCount,
+      itemBuilder: (context, index) {
+        return Transform.translate(
+          offset: Offset(0.0, index.isOdd ? 100 : 0.0 ),
+          child: itemBuilder(context, index),
+        );
+      },
+    );
   }
 }
